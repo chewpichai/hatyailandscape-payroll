@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "127.0.0.1:27017:27017"
+  sftp:
+    depends_on:
+      - mongo
+    image: atmoz/sftp
+    volumes:
+      - ./sftp/sshd_config:/etc/ssh/sshd_config
+    ports:
+      - "2222:22"
+    command: user:pass
+  app:
+    depends_on:
+      - mongo
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: runner
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI
+      - JWT_SECRET
+
+volumes:
+  mongo_data:
