@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getEmployees } from "@/libs/fetch";
+import { api, getEmployees } from "@/libs/fetch";
 import {
   TableContainer,
   Paper,
@@ -11,14 +11,12 @@ import {
   TableBody,
   IconButton,
   Modal,
-  Button,
 } from "@mui/material";
 import { IEmployee } from "@/models/employee";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EmployeeForm from "./form-employee";
-import axios from "axios";
 
 function EmployeeDataGrid() {
   const [employees, setEmployees] = useState<IEmployee[]>([]);
@@ -44,7 +42,7 @@ function EmployeeDataGrid() {
   }
 
   function handleDeleteClick(employee: IEmployee) {
-    axios.delete(`/api/employee/${employee._id}`).then(loadData);
+    api.delete(`/api/employee/${employee._id}`).then(loadData);
   }
 
   function handleSaved() {

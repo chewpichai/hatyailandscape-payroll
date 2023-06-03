@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { getBonuses } from "@/libs/fetch";
+import { api, getBonuses } from "@/libs/fetch";
 import {
   TableContainer,
   Paper,
@@ -16,7 +16,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import axios from "axios";
 import { IBonus } from "@/models/bonus";
 import moment from "moment-timezone";
 import BonusForm from "./form-bonus";
@@ -49,9 +48,7 @@ function BonusDataGrid() {
   }
 
   function handleDeleteClick(bonus: IBonus) {
-    axios
-      .delete(`/api/bonus/${bonus._id}`)
-      .then(() => handleSubmit(onSubmit)());
+    api.delete(`/api/bonus/${bonus._id}`).then(() => handleSubmit(onSubmit)());
   }
 
   function handleSaved() {

@@ -4,23 +4,16 @@ import {
   Button,
   CircularProgress,
   Container,
-  Divider,
   Paper,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Unstable_Grid2";
-import {
-  CheckboxInput,
-  DateInputField,
-  InputField,
-  SelectInput,
-} from "./fields";
-import axios from "axios";
+import { DateInputField, InputField, SelectInput } from "./fields";
 import dayjs, { Dayjs } from "dayjs";
 import { IBonus } from "@/models/bonus";
 import { IEmployee } from "@/models/employee";
-import { getEmployees, getPayrolls } from "@/libs/fetch";
+import { api, getEmployees, getPayrolls } from "@/libs/fetch";
 import { IPayroll } from "@/models/payroll";
 
 interface IBonusFormData
@@ -93,8 +86,8 @@ function BonusForm({ bonus, onSaved }: Props) {
   function onSubmit(data: IBonusFormData) {
     setSaving(true);
     let promise;
-    if (bonus) promise = axios.put(`/api/bonus/${bonus._id}`, data);
-    else promise = axios.post("/api/bonus", data);
+    if (bonus) promise = api.put(`/api/bonus/${bonus._id}`, data);
+    else promise = api.post("/api/bonus", data);
     promise.then(({ data }) => {
       setSaving(false);
       onSaved && onSaved();

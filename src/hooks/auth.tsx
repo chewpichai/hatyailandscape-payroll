@@ -1,5 +1,4 @@
 import { IUser } from "@/models/user";
-import axios from "axios";
 import {
   ReactNode,
   createContext,
@@ -9,6 +8,7 @@ import {
 } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { api } from "@/libs/fetch";
 
 type AuthContent = {
   user?: IUser;
@@ -37,7 +37,7 @@ function _useAuth() {
   }, []);
 
   function login(data: { username: string; password: string }) {
-    axios
+    api
       .post("/api/login", data)
       .then(({ data }) => {
         localStorage.setItem("user", JSON.stringify(data));

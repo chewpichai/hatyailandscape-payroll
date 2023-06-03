@@ -4,10 +4,12 @@ import { verify } from "@/libs/jwt";
 import { IUser } from "@/models/user";
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "/";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const includes = ["/employee", "/payroll", "/bonus", "/user"];
+  const baseUrl = new URL(BASE_PATH, request.url);
 
   if (
     (path.startsWith("/api") && path !== "/api/login") ||
@@ -24,8 +26,7 @@ export async function middleware(request: NextRequest) {
         }
       } catch (error) {}
     }
-    if (includes.includes(path))
-      return NextResponse.redirect(new URL("/", request.url));
+    if (includes.includes(path)) return NextResponse.redirect(baseUrl);
     return NextResponse.json("unautherized", { status: 403 });
   }
 }

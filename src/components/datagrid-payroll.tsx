@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { getPayrolls } from "@/libs/fetch";
+import React, { useState } from "react";
+import { api, getPayrolls } from "@/libs/fetch";
 import {
-  Box,
   Button,
   IconButton,
   Modal,
@@ -22,7 +21,6 @@ import moment from "moment-timezone";
 import { DateInputField } from "./fields";
 import { useForm } from "react-hook-form";
 import PayrollForm from "./form-payroll";
-import axios from "axios";
 import "moment/locale/th";
 import { getDateRange } from "@/libs/utils";
 import dayjs, { Dayjs } from "dayjs";
@@ -64,7 +62,7 @@ function PayrollDataGrid() {
   }
 
   function handleDeleteClick(payroll: IPayroll) {
-    axios
+    api
       .delete(`/api/payroll/${payroll._id}`)
       .then(() => handleSubmit(onSubmit)());
   }

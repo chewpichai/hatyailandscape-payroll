@@ -9,10 +9,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/auth";
-import Link from "next/link";
+import Logo from "./logo";
 
 const pages = [
   ["employee", "พนักงาน"],
@@ -127,14 +126,6 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
-  );
-}
-
-function Logo() {
-  return (
-    <Link href="/">
-      <Image src="/logo.webp" alt="Hatyai Landscape" width={50} height={50} />
-    </Link>
   );
 }
 

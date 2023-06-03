@@ -3,16 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Button, CircularProgress, Container, Paper } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Unstable_Grid2";
-import {
-  CheckboxInput,
-  DateInputField,
-  InputField,
-  SelectInput,
-} from "./fields";
-import { IEmployee } from "@/models/employee";
-import axios from "axios";
-import dayjs, { Dayjs } from "dayjs";
+import { InputField, SelectInput } from "./fields";
 import { IUser } from "@/models/user";
+import { api } from "@/libs/fetch";
 
 type Props = { user?: IUser; onSaved?: () => void };
 
@@ -30,8 +23,8 @@ function UserForm({ user, onSaved }: Props) {
   function onSubmit(data: IUser) {
     setSaving(true);
     let promise;
-    if (user) promise = axios.put(`/api/user/${user._id}`, data);
-    else promise = axios.post("/api/user", data);
+    if (user) promise = api.put(`/api/user/${user._id}`, data);
+    else promise = api.post("/api/user", data);
     promise.then(({ data }) => {
       setSaving(false);
       onSaved && onSaved();

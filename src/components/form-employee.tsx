@@ -10,8 +10,8 @@ import {
   SelectInput,
 } from "./fields";
 import { IEmployee } from "@/models/employee";
-import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
+import { api } from "@/libs/fetch";
 
 interface IEmployeeFormData extends Omit<IEmployee, "startDate"> {
   startDate: Dayjs;
@@ -32,8 +32,8 @@ function EmployeeForm({ employee, onSaved }: Props) {
   function onSubmit(data: IEmployeeFormData) {
     setSaving(true);
     let promise;
-    if (employee) promise = axios.put(`/api/employee/${employee._id}`, data);
-    else promise = axios.post("/api/employee", data);
+    if (employee) promise = api.put(`/api/employee/${employee._id}`, data);
+    else promise = api.post("/api/employee", data);
     promise.then(({ data }) => {
       setSaving(false);
       onSaved && onSaved();

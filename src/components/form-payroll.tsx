@@ -11,9 +11,8 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { DateInputField, InputField, SelectInput } from "./fields";
 import { useForm } from "react-hook-form";
-import { getEmployees } from "@/libs/fetch";
+import { api, getEmployees } from "@/libs/fetch";
 import { IEmployee } from "@/models/employee";
-import axios from "axios";
 import { IPayroll } from "@/models/payroll";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -114,8 +113,8 @@ function PayrollForm({ payroll, onSaved }: Props) {
   function onSubmit(data: IPayrollFormData) {
     setSaving(true);
     let promise;
-    if (payroll) promise = axios.put(`/api/payroll/${payroll._id}`, data);
-    else promise = axios.post("/api/payroll", data);
+    if (payroll) promise = api.put(`/api/payroll/${payroll._id}`, data);
+    else promise = api.post("/api/payroll", data);
     promise.then(({ data }) => {
       setSaving(false);
       onSaved && onSaved();

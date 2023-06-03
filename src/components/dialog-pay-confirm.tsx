@@ -9,9 +9,9 @@ import { DateInputField } from "./fields";
 import { useForm } from "react-hook-form";
 import { Dayjs } from "dayjs";
 import { IPayroll } from "@/models/payroll";
-import axios from "axios";
 import { useState } from "react";
 import { IBonus } from "@/models/bonus";
+import { api } from "@/libs/fetch";
 
 type FormData = {
   payDate: Dayjs;
@@ -39,8 +39,8 @@ export default function PayConfirmDialog({
     setSaving(true);
     const body = { ...data, status: "paid" };
     const promise = payroll
-      ? axios.put(`/api/payroll/${payroll?._id}`, body)
-      : axios.put(`/api/bonus/${bonus?._id}`, body);
+      ? api.put(`/api/payroll/${payroll?._id}`, body)
+      : api.put(`/api/bonus/${bonus?._id}`, body);
     promise.then(() => {
       setSaving(false);
       onSaved();

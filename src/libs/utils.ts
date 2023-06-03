@@ -1,5 +1,7 @@
 import moment from "moment-timezone";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
+
 export function getDateRange() {
   const now = moment().hour(0).minute(0);
   const day = now.date();
@@ -9,4 +11,8 @@ export function getDateRange() {
       now.date(1).add(1, "months").subtract(1, "days").toDate(),
     ];
   return [now.date(1).toDate(), now.date(15).toDate()];
+}
+
+export function getPath(path: string) {
+  return `${BASE_PATH}${path}`;
 }

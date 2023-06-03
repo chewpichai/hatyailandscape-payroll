@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getUsers } from "@/libs/fetch";
+import { api, getUsers } from "@/libs/fetch";
 import {
   TableContainer,
   Paper,
@@ -15,7 +15,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import axios from "axios";
 import { IUser } from "@/models/user";
 import UserForm from "./form-user";
 
@@ -43,7 +42,7 @@ function UserDataGrid() {
   }
 
   function handleDeleteClick(user: IUser) {
-    axios.delete(`/api/user/${user._id}`).then(loadData);
+    api.delete(`/api/user/${user._id}`).then(loadData);
   }
 
   function handleSaved() {
