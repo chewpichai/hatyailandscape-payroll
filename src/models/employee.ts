@@ -49,6 +49,7 @@ export const EmployeeSchema = new mongoose.Schema({
 });
 
 EmployeeSchema.pre("findOneAndDelete", function (next) {
-  mongoose.models.Payroll.deleteMany({ employee: this.get("_id") }).exec();
+  const { _id: employee } = this.getQuery();
+  mongoose.models.Payroll.deleteMany({ employee }).exec();
   next();
 });

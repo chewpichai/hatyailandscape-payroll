@@ -139,9 +139,9 @@ function PayrollDataGrid() {
                 </TableCell>
                 <TableCell className="text-right">{payroll.total}</TableCell>
                 <TableCell className="text-center">
-                  {payroll.employee.bankAccount.bank}
+                  {payroll.employee.bankAccount?.bank}
                   <br />
-                  {payroll.employee.bankAccount.number}
+                  {payroll.employee.bankAccount?.number}
                 </TableCell>
                 <TableCell className="text-center">{payroll.status}</TableCell>
                 <TableCell className="text-center">

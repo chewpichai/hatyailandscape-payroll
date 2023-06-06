@@ -73,7 +73,7 @@ function PayrollForm({ payroll, onSaved }: Props) {
         const salary = monthly + daily + hourly;
         const socialSecurityRate = Number(value.socialSecurityRate);
         const socialSecurity = Math.ceil(salary * socialSecurityRate);
-        const returnWithholdingTax = Math.ceil(salary * 0.03);
+        const returnWithholdingTax = Math.ceil((salary * 3) / 97);
         setValue("salary", salary);
         if (employee?.inSocialSecurity)
           setValue("socialSecurity", socialSecurity);
@@ -206,6 +206,7 @@ function PayrollForm({ payroll, onSaved }: Props) {
             name="socialSecurityRate"
             label="ประกันสังคม"
             options={[
+              { label: "ไม่คำนวณ", value: 0 },
               { label: "0.5%", value: 0.005 },
               { label: "1%", value: 0.01 },
               { label: "2%", value: 0.02 },
