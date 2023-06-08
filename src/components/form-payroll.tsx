@@ -15,6 +15,15 @@ import { api, getEmployees } from "@/libs/fetch";
 import { IEmployee } from "@/models/employee";
 import { IPayroll } from "@/models/payroll";
 import dayjs, { Dayjs } from "dayjs";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  employee: yup.string().required(),
+  startDate: yup.date().required(),
+  endDate: yup.date().required(),
+  salary: yup.number().required(),
+});
 
 interface IPayrollFormData
   extends Omit<IPayroll, "employee" | "startDate" | "endDate"> {
@@ -22,6 +31,7 @@ interface IPayrollFormData
   startDate: Dayjs;
   endDate: Dayjs;
 }
+
 type Props = { payroll?: IPayroll; onSaved?: () => void };
 
 function PayrollForm({ payroll, onSaved }: Props) {
@@ -29,7 +39,7 @@ function PayrollForm({ payroll, onSaved }: Props) {
   const [employee, setEmployee] = useState<IEmployee>();
   const [saving, setSaving] = useState(false);
   const { control, handleSubmit, watch, setValue, reset } =
-    useForm<IPayrollFormData>();
+    useForm<IPayrollFormData>({ resolver: yupResolver(schema) });
   const employeeId = watch("employee");
   const total = watch("total");
 

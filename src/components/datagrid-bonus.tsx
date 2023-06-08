@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api, getBonuses } from "@/libs/fetch";
 import {
   TableContainer,
@@ -37,6 +37,16 @@ function BonusDataGrid() {
   });
   const [showDialog, setShowDialog] = useState(false);
 
+  useEffect(() => {
+    const year = dayjs().year();
+    const params = {
+      startDate: dayjs(`01-01-${year}`).toDate(),
+      endDate: dayjs(`12-31-${year}`).toDate(),
+    };
+    console.log(params);
+    getBonuses(params).then((data) => setBonuses(data));
+  }, []);
+
   function handleAddClick() {
     setBonus(undefined);
     setShowModal(true);
@@ -54,7 +64,7 @@ function BonusDataGrid() {
   function handleSaved() {
     handleSubmit(onSubmit)();
     setShowModal(false);
-    setShowDialog(true);
+    setShowDialog(false);
   }
 
   function onSubmit(data: FormData) {

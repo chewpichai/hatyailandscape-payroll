@@ -15,6 +15,16 @@ import { IBonus } from "@/models/bonus";
 import { IEmployee } from "@/models/employee";
 import { api, getEmployees, getPayrolls } from "@/libs/fetch";
 import { IPayroll } from "@/models/payroll";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  employee: yup.string().required(),
+  startDate: yup.date().required(),
+  endDate: yup.date().required(),
+  rate: yup.number().required(),
+  salary: yup.number().required(),
+});
 
 interface IBonusFormData
   extends Omit<IBonus, "employee" | "startDate" | "endDate" | "payDate"> {
@@ -23,13 +33,14 @@ interface IBonusFormData
   endDate: Dayjs;
   payDate: Dayjs;
 }
+
 type Props = { bonus?: IBonus; onSaved?: () => void };
 
 function BonusForm({ bonus, onSaved }: Props) {
   const [employees, setEmployees] = useState<IEmployee[]>([]);
   const [saving, setSaving] = useState(false);
   const { control, handleSubmit, watch, reset, setValue } =
-    useForm<IBonusFormData>();
+    useForm<IBonusFormData>({ resolver: yupResolver(schema) });
   const employee = watch("employee");
   const total = watch("total");
 

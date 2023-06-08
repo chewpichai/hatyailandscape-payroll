@@ -12,6 +12,12 @@ import { IPayroll } from "@/models/payroll";
 import { useState } from "react";
 import { IBonus } from "@/models/bonus";
 import { api } from "@/libs/fetch";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  payDate: yup.date().required(),
+});
 
 type FormData = {
   payDate: Dayjs;
@@ -32,7 +38,9 @@ export default function PayConfirmDialog({
   onClose,
   onSaved,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormData>();
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
   const [saving, setSaving] = useState(false);
 
   function onSubmit(data: FormData) {

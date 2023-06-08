@@ -12,15 +12,32 @@ import {
 import { IEmployee } from "@/models/employee";
 import dayjs, { Dayjs } from "dayjs";
 import { api } from "@/libs/fetch";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  type: yup.string().required(),
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
+  "wage.monthly": yup
+    .number()
+    .when("type", { is: "monthly", then: (s) => s.required() }),
+  "wage.daily": yup
+    .number()
+    .when("type", { is: "daily", then: (s) => s.required() }),
+});
 
 interface IEmployeeFormData extends Omit<IEmployee, "startDate"> {
   startDate: Dayjs;
 }
+
 type Props = { employee?: IEmployee; onSaved?: () => void };
 
 function EmployeeForm({ employee, onSaved }: Props) {
   const [saving, setSaving] = useState(false);
-  const { control, handleSubmit, watch, reset } = useForm<IEmployeeFormData>();
+  const { control, handleSubmit, watch, reset } = useForm<IEmployeeFormData>({
+    resolver: yupResolver(schema),
+  });
   const type = watch("type");
 
   useEffect(() => {

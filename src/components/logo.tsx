@@ -10,6 +10,7 @@ export default function Logo() {
         alt="Hatyai Landscape"
         width={50}
         height={50}
+        priority={true}
       />
     </Link>
   );

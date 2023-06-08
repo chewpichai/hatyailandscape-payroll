@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api, getPayrolls } from "@/libs/fetch";
 import {
   Button,
@@ -42,6 +42,12 @@ function PayrollDataGrid() {
     defaultValues: { startDate: dayjs(startDate), endDate: dayjs(endDate) },
   });
   const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => {
+    const [startDate, endDate] = getDateRange();
+    const params = { startDate, endDate };
+    getPayrolls(params).then((data) => setPayrolls(data));
+  }, []);
 
   function onSubmit(data: PayrollSearchFormData) {
     const params = {

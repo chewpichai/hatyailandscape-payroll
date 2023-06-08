@@ -6,13 +6,22 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { InputField, SelectInput } from "./fields";
 import { IUser } from "@/models/user";
 import { api } from "@/libs/fetch";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({
+  type: yup.string().required(),
+  username: yup.string().required(),
+  password: yup.string().required(),
+});
 
 type Props = { user?: IUser; onSaved?: () => void };
 
 function UserForm({ user, onSaved }: Props) {
   const [saving, setSaving] = useState(false);
-  const { control, handleSubmit, watch, reset } = useForm<IUser>();
-  const type = watch("type");
+  const { control, handleSubmit, watch, reset } = useForm<IUser>({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     if (user) {

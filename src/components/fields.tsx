@@ -35,7 +35,8 @@ export function InputField({
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
+      defaultValue=""
+      render={({ field: { onChange, value }, fieldState: { invalid } }) => (
         <TextField
           variant="outlined"
           label={label}
@@ -48,6 +49,7 @@ export function InputField({
           fullWidth
           disabled={disabled}
           type={type}
+          error={invalid}
         />
       )}
     />
@@ -64,7 +66,7 @@ export function DateInputField({
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value }, fieldState: { invalid } }) => (
         <DateField
           variant="outlined"
           label={label}
@@ -73,9 +75,11 @@ export function DateInputField({
           format={format}
           InputLabelProps={{
             shrink: true,
+            error: invalid,
           }}
           size="small"
           fullWidth
+          InputProps={{ error: invalid }}
         />
       )}
     />
@@ -109,7 +113,7 @@ export function SelectInput({
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value }, fieldState: { invalid } }) => (
         <FormControl fullWidth size="small">
           <InputLabel>{label}</InputLabel>
           <Select
@@ -117,6 +121,7 @@ export function SelectInput({
             value={value || ""}
             onChange={onChange}
             disabled={disabled}
+            error={invalid}
           >
             {options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
