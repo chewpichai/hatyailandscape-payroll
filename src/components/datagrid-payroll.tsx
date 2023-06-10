@@ -17,11 +17,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IPayroll } from "@/models/payroll";
-import moment from "moment-timezone";
 import { DateInputField } from "./fields";
 import { useForm } from "react-hook-form";
 import PayrollForm from "./form-payroll";
-import "moment/locale/th";
 import { getDateRange } from "@/libs/utils";
 import dayjs, { Dayjs } from "dayjs";
 import PayConfirmDialog from "./dialog-pay-confirm";
@@ -29,8 +27,9 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import FolderIcon from "@mui/icons-material/Folder";
 import UploadDialog from "./dialog-upload";
 import ViewFileDialog from "./dialog-viewfile";
+import "dayjs/locale/th";
 
-moment.locale("th");
+dayjs.locale("th");
 
 type PayrollSearchFormData = {
   startDate: Dayjs;
@@ -154,11 +153,11 @@ function PayrollDataGrid() {
               <TableRow key={payroll._id}>
                 <TableCell>{`${payroll.employee.firstName} ${payroll.employee.lastName}`}</TableCell>
                 <TableCell className="text-center">
-                  {`${moment(payroll.startDate).format("DD")}-${moment(
+                  {`${dayjs(payroll.startDate).format("DD")}-${dayjs(
                     payroll.endDate
                   ).format("DD")}`}
                   <br />
-                  {moment(payroll.endDate).format("MMM YY")}
+                  {dayjs(payroll.endDate).format("MMM YY")}
                 </TableCell>
                 <TableCell className="text-right">{payroll.total}</TableCell>
                 <TableCell className="text-center">
@@ -169,7 +168,7 @@ function PayrollDataGrid() {
                 <TableCell className="text-center">{payroll.status}</TableCell>
                 <TableCell className="text-center">
                   {payroll.payDate ? (
-                    moment(payroll.payDate).format("DD/MM/YY")
+                    dayjs(payroll.payDate).format("DD/MM/YY")
                   ) : (
                     <Button
                       variant="contained"

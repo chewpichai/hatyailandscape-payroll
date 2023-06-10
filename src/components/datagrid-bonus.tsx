@@ -17,7 +17,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IBonus } from "@/models/bonus";
-import moment from "moment-timezone";
 import BonusForm from "./form-bonus";
 import { DateInputField } from "./fields";
 import { useForm } from "react-hook-form";
@@ -132,17 +131,17 @@ function BonusDataGrid() {
               <TableRow key={bonus._id}>
                 <TableCell>{`${bonus.employee.firstName} ${bonus.employee.lastName}`}</TableCell>
                 <TableCell className="text-center">
-                  {moment(bonus.startDate).format("DD/MM/YY")}
+                  {dayjs(bonus.startDate).format("DD/MM/YY")}
                 </TableCell>
                 <TableCell className="text-center">
-                  {moment(bonus.endDate).format("DD/MM/YY")}
+                  {dayjs(bonus.endDate).format("DD/MM/YY")}
                 </TableCell>
                 <TableCell className="text-center">{bonus.rate}</TableCell>
                 <TableCell className="text-right">{bonus.total}</TableCell>
                 <TableCell className="text-center">{bonus.status}</TableCell>
                 <TableCell className="text-center">
                   {bonus.payDate ? (
-                    moment(bonus.payDate).format("DD/MM/YY")
+                    dayjs(bonus.payDate).format("DD/MM/YY")
                   ) : (
                     <Button
                       variant="contained"
