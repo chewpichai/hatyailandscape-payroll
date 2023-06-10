@@ -20,6 +20,7 @@ export interface IEmployee {
   wage: { monthly: number; daily: number; hourly: number; overtime: number };
   inSocialSecurity: boolean;
   startDate: Date;
+  media?: [{ _id: string; fileName: string }];
 }
 
 export const EmployeeSchema = new mongoose.Schema({
@@ -46,6 +47,7 @@ export const EmployeeSchema = new mongoose.Schema({
   },
   inSocialSecurity: { type: Boolean, default: false },
   startDate: Date,
+  media: [{ fileName: { type: String, required: true } }],
 });
 
 EmployeeSchema.pre("findOneAndDelete", function (next) {

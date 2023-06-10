@@ -1,0 +1,7 @@
+/public/uploads
+/uploads
+/.next
+/node_modules
+/sftp
+Dockerfile*
+docker-compose*.yml

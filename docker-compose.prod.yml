@@ -21,10 +21,12 @@ services:
       context: .
       dockerfile: Dockerfile.prod
       target: runner
+    volumes:
+      - ./uploads:/app/public/uploads
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - MONGO_URI
       - JWT_SECRET
       - NEXT_PUBLIC_BASE_PATH

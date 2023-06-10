@@ -25,6 +25,10 @@ import "moment/locale/th";
 import { getDateRange } from "@/libs/utils";
 import dayjs, { Dayjs } from "dayjs";
 import PayConfirmDialog from "./dialog-pay-confirm";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import FolderIcon from "@mui/icons-material/Folder";
+import UploadDialog from "./dialog-upload";
+import ViewFileDialog from "./dialog-viewfile";
 
 moment.locale("th");
 
@@ -42,6 +46,8 @@ function PayrollDataGrid() {
     defaultValues: { startDate: dayjs(startDate), endDate: dayjs(endDate) },
   });
   const [showDialog, setShowDialog] = useState(false);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showViewFileDialog, setShowViewFileDialog] = useState(false);
 
   useEffect(() => {
     const [startDate, endDate] = getDateRange();
@@ -76,12 +82,23 @@ function PayrollDataGrid() {
   function handleSaved() {
     setShowModal(false);
     setShowDialog(false);
+    setShowUploadDialog(false);
     handleSubmit(onSubmit)();
   }
 
   function handlePayClick(payroll: IPayroll) {
     setPayroll(payroll);
     setShowDialog(true);
+  }
+
+  function handleUploadClick(payroll: IPayroll) {
+    setPayroll(payroll);
+    setShowUploadDialog(true);
+  }
+
+  function handleViewFileClick(payroll: IPayroll) {
+    setPayroll(payroll);
+    setShowViewFileDialog(true);
   }
 
   return (
@@ -129,7 +146,7 @@ function PayrollDataGrid() {
               <TableCell className="text-center min-w-[140px]">
                 วันที่จ่าย
               </TableCell>
-              <TableCell className="text-center min-w-[96px]"></TableCell>
+              <TableCell className="text-center min-w-[150px]"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -163,7 +180,20 @@ function PayrollDataGrid() {
                     </Button>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-right">
+                  <IconButton
+                    size="small"
+                    onClick={() => handleUploadClick(payroll)}
+                  >
+                    <DriveFolderUploadIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleViewFileClick(payroll)}
+                    disabled={!payroll.media?.length}
+                  >
+                    <FolderIcon fontSize="inherit" />
+                  </IconButton>
                   {payroll.status !== "paid" && (
                     <>
                       <IconButton
@@ -198,6 +228,19 @@ function PayrollDataGrid() {
         open={showDialog}
         onClose={() => setShowDialog(false)}
         onSaved={handleSaved}
+      />
+
+      <UploadDialog
+        payroll={payroll}
+        open={showUploadDialog}
+        onClose={() => setShowUploadDialog(false)}
+        onSaved={handleSaved}
+      />
+
+      <ViewFileDialog
+        files={payroll?.media}
+        open={showViewFileDialog}
+        onClose={() => setShowViewFileDialog(false)}
       />
     </>
   );

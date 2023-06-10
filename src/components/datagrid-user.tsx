@@ -74,7 +74,7 @@ function UserDataGrid() {
               <TableRow key={user._id}>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.type}</TableCell>
-                <TableCell>
+                <TableCell className="text-right">
                   <IconButton
                     size="small"
                     onClick={() => handleEditClick(user)}

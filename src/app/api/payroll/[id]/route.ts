@@ -6,7 +6,6 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const body = await request.json();
-  console.log(body);
   const payroll = await Payroll.findByIdAndUpdate(params.id, body, {
     returnDocument: "after",
   });

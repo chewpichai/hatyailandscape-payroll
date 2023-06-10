@@ -43,7 +43,6 @@ function BonusDataGrid() {
       startDate: dayjs(`01-01-${year}`).toDate(),
       endDate: dayjs(`12-31-${year}`).toDate(),
     };
-    console.log(params);
     getBonuses(params).then((data) => setBonuses(data));
   }, []);
 
@@ -154,7 +153,7 @@ function BonusDataGrid() {
                     </Button>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-right">
                   <IconButton
                     size="small"
                     onClick={() => handleEditClick(bonus)}

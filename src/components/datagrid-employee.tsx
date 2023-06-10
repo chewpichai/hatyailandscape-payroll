@@ -16,12 +16,18 @@ import { IEmployee } from "@/models/employee";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import FolderIcon from "@mui/icons-material/Folder";
 import EmployeeForm from "./form-employee";
+import UploadDialog from "./dialog-upload";
+import ViewFileDialog from "./dialog-viewfile";
 
 function EmployeeDataGrid() {
   const [employees, setEmployees] = useState<IEmployee[]>([]);
   const [employee, setEmployee] = useState<IEmployee>();
   const [showModal, setShowModal] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [showViewFileDialog, setShowViewFileDialog] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -48,6 +54,17 @@ function EmployeeDataGrid() {
   function handleSaved() {
     loadData();
     setShowModal(false);
+    setShowDialog(false);
+  }
+
+  function handleUploadClick(employee: IEmployee) {
+    setEmployee(employee);
+    setShowDialog(true);
+  }
+
+  function handleViewFileClick(employee: IEmployee) {
+    setEmployee(employee);
+    setShowViewFileDialog(true);
   }
 
   return (
@@ -78,7 +95,20 @@ function EmployeeDataGrid() {
                 <TableCell>{employee.lastName}</TableCell>
                 <TableCell>{employee.position}</TableCell>
                 <TableCell>{employee.phoneNumber}</TableCell>
-                <TableCell>
+                <TableCell className="text-right">
+                  <IconButton
+                    size="small"
+                    onClick={() => handleUploadClick(employee)}
+                  >
+                    <DriveFolderUploadIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleViewFileClick(employee)}
+                    disabled={!employee.media?.length}
+                  >
+                    <FolderIcon fontSize="inherit" />
+                  </IconButton>
                   <IconButton
                     size="small"
                     onClick={() => handleEditClick(employee)}
@@ -103,6 +133,19 @@ function EmployeeDataGrid() {
           <EmployeeForm employee={employee} onSaved={handleSaved} />
         </div>
       </Modal>
+
+      <UploadDialog
+        employee={employee}
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        onSaved={handleSaved}
+      />
+
+      <ViewFileDialog
+        files={employee?.media}
+        open={showViewFileDialog}
+        onClose={() => setShowViewFileDialog(false)}
+      />
     </>
   );
 }

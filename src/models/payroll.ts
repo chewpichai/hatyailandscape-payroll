@@ -20,6 +20,7 @@ export interface IPayroll {
   total: number;
   status: string;
   payDate: Date;
+  media?: [{ _id: string; fileName: string }];
 }
 
 export const PayrollSchema = new mongoose.Schema({
@@ -45,4 +46,5 @@ export const PayrollSchema = new mongoose.Schema({
   total: { type: Number, default: 0 },
   status: { type: String, default: "wait" },
   payDate: Date,
+  media: [{ fileName: { type: String, required: true } }],
 });
