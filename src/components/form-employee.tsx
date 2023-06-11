@@ -19,15 +19,23 @@ const schema = yup.object({
   type: yup.string().required(),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  wage: yup.object({
-    monthly: yup
-      .number()
-      .notRequired()
-      .when("type", { is: "monthly", then: (s) => s.required() }),
-    daily: yup
-      .number()
-      .notRequired()
-      .when("type", { is: "daily", then: (s) => s.required() }),
+  wage: yup.object().when("type", ([type], s) => {
+    if (type === "daily")
+      return yup.object({
+        monthly: yup.number().transform((v) => (isNaN(v) ? undefined : v)),
+        daily: yup
+          .number()
+          .transform((v) => (isNaN(v) ? undefined : v))
+          .required(),
+      });
+    else
+      return yup.object({
+        monthly: yup
+          .number()
+          .transform((v) => (isNaN(v) ? undefined : v))
+          .required(),
+        daily: yup.number().transform((v) => (isNaN(v) ? undefined : v)),
+      });
   }),
 });
 
@@ -39,9 +47,10 @@ type Props = { employee?: IEmployee; onSaved?: () => void };
 
 function EmployeeForm({ employee, onSaved }: Props) {
   const [saving, setSaving] = useState(false);
-  const { control, handleSubmit, watch, reset } = useForm<IEmployeeFormData>({
-    resolver: yupResolver(schema),
-  });
+  const { control, handleSubmit, watch, reset, resetField } =
+    useForm<IEmployeeFormData>({
+      resolver: yupResolver(schema),
+    });
   const type = watch("type");
 
   useEffect(() => {
@@ -49,6 +58,11 @@ function EmployeeForm({ employee, onSaved }: Props) {
       reset({ ...employee, startDate: dayjs(employee.startDate) });
     }
   }, [employee, reset]);
+
+  useEffect(() => {
+    if (type === "daily") resetField("wage.monthly");
+    else if (type === "monthly") resetField("wage.daily");
+  }, [type, resetField]);
 
   function onSubmit(data: IEmployeeFormData) {
     setSaving(true);

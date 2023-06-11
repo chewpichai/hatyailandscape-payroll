@@ -35,12 +35,11 @@ export function InputField({
     <Controller
       name={name}
       control={control}
-      defaultValue=""
       render={({ field: { onChange, value }, fieldState: { invalid } }) => (
         <TextField
           variant="outlined"
           label={label}
-          value={value}
+          value={value || ""}
           onChange={onChange}
           InputLabelProps={{
             shrink: true,
