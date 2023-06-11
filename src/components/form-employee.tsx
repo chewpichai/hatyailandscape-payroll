@@ -19,12 +19,16 @@ const schema = yup.object({
   type: yup.string().required(),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  "wage.monthly": yup
-    .number()
-    .when("type", { is: "monthly", then: (s) => s.required() }),
-  "wage.daily": yup
-    .number()
-    .when("type", { is: "daily", then: (s) => s.required() }),
+  wage: yup.object({
+    monthly: yup
+      .number()
+      .notRequired()
+      .when("type", { is: "monthly", then: (s) => s.required() }),
+    daily: yup
+      .number()
+      .notRequired()
+      .when("type", { is: "daily", then: (s) => s.required() }),
+  }),
 });
 
 interface IEmployeeFormData extends Omit<IEmployee, "startDate"> {
