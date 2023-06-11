@@ -69,12 +69,12 @@ export default function UploadDialog({
       <DialogContent>
         <MuiFileInput value={file} onChange={handleChange} />
         {file && preview && (
-          <Box sx={{ position: "relative", height: 200, marginTop: 2 }}>
+          <Box className="relative h-[200px]" sx={{ marginTop: 2 }}>
             <Image
+              className="object-contain"
               alt="preview"
               src={preview}
               fill
-              style={{ objectFit: "contain" }}
             />
           </Box>
         )}
