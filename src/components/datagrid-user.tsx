@@ -26,7 +26,6 @@ function UserDataGrid(props: { users: IUser[] }) {
     queryKey: ["users"],
     queryFn: getUsers,
     initialData: props.users,
-    enabled: false,
   });
 
   function loadData() {

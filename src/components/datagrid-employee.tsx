@@ -32,7 +32,6 @@ function EmployeeDataGrid(props: { employees: IEmployee[] }) {
     queryKey: ["employees"],
     queryFn: getEmployees,
     initialData: props.employees,
-    enabled: false,
   });
 
   function loadData() {

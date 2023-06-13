@@ -53,7 +53,6 @@ function PayrollDataGrid(props: { payrolls: IPayroll[] }) {
     queryKey: ["payrolls"],
     queryFn: () => getPayrolls(params),
     initialData: props.payrolls,
-    enabled: false,
   });
 
   useEffect(() => {

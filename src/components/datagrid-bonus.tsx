@@ -45,7 +45,6 @@ function BonusDataGrid(props: { bonuses: IBonus[] }) {
     queryKey: ["bonuses"],
     queryFn: () => getBonuses(params),
     initialData: props.bonuses,
-    enabled: false,
   });
 
   useEffect(() => {
