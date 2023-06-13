@@ -7,6 +7,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "/";
 
 export async function middleware(request: NextRequest) {
+  if (request.headers.get("x-server-secret") === JWT_SECRET)
+    return NextResponse.next();
+
   const path = request.nextUrl.pathname;
   const includes = ["/employee", "/payroll", "/bonus", "/user"];
   const baseUrl = new URL(BASE_PATH, request.url);

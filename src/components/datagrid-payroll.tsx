@@ -27,39 +27,44 @@ import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import FolderIcon from "@mui/icons-material/Folder";
 import UploadDialog from "./dialog-upload";
 import ViewFileDialog from "./dialog-viewfile";
+import { useQuery } from "@tanstack/react-query";
 import "dayjs/locale/th";
 
 dayjs.locale("th");
+
+const [start, end] = getDateRange();
 
 type PayrollSearchFormData = {
   startDate: Dayjs;
   endDate: Dayjs;
 };
 
-function PayrollDataGrid() {
-  const [payrolls, setPayrolls] = useState<IPayroll[]>([]);
+function PayrollDataGrid(props: { payrolls: IPayroll[] }) {
+  const [params, setParams] = useState({ startDate: start, endDate: end });
   const [payroll, setPayroll] = useState<IPayroll>();
   const [showModal, setShowModal] = useState(false);
-  const [startDate, endDate] = getDateRange();
   const { control, setValue, handleSubmit } = useForm<PayrollSearchFormData>({
-    defaultValues: { startDate: dayjs(startDate), endDate: dayjs(endDate) },
+    defaultValues: { startDate: dayjs(start), endDate: dayjs(end) },
   });
   const [showDialog, setShowDialog] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showViewFileDialog, setShowViewFileDialog] = useState(false);
+  const { data: payrolls, refetch } = useQuery<IPayroll[]>({
+    queryKey: ["payrolls"],
+    queryFn: () => getPayrolls(params),
+    initialData: props.payrolls,
+    enabled: false,
+  });
 
   useEffect(() => {
-    const [startDate, endDate] = getDateRange();
-    const params = { startDate, endDate };
-    getPayrolls(params).then((data) => setPayrolls(data));
-  }, []);
+    refetch();
+  }, [params, refetch]);
 
   function onSubmit(data: PayrollSearchFormData) {
-    const params = {
+    setParams({
       startDate: data.startDate.toDate(),
       endDate: data.endDate.toDate(),
-    };
-    getPayrolls(params).then((data) => setPayrolls(data));
+    });
   }
 
   function handleAddClick() {
@@ -73,9 +78,10 @@ function PayrollDataGrid() {
   }
 
   function handleDeleteClick(payroll: IPayroll) {
-    api
-      .delete(`/api/payroll/${payroll._id}`)
-      .then(() => handleSubmit(onSubmit)());
+    if (confirm(`ต้องการลบ`))
+      api
+        .delete(`/api/payroll/${payroll._id}`)
+        .then(() => handleSubmit(onSubmit)());
   }
 
   function handleSaved() {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { api, getEmployees } from "@/libs/fetch";
 import {
   TableContainer,
@@ -21,20 +21,22 @@ import FolderIcon from "@mui/icons-material/Folder";
 import EmployeeForm from "./form-employee";
 import UploadDialog from "./dialog-upload";
 import ViewFileDialog from "./dialog-viewfile";
+import { useQuery } from "@tanstack/react-query";
 
-function EmployeeDataGrid() {
-  const [employees, setEmployees] = useState<IEmployee[]>([]);
+function EmployeeDataGrid(props: { employees: IEmployee[] }) {
   const [employee, setEmployee] = useState<IEmployee>();
   const [showModal, setShowModal] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [showViewFileDialog, setShowViewFileDialog] = useState(false);
-
-  useEffect(() => {
-    loadData();
-  }, []);
+  const { data: employees, refetch } = useQuery<IEmployee[]>({
+    queryKey: ["employees"],
+    queryFn: getEmployees,
+    initialData: props.employees,
+    enabled: false,
+  });
 
   function loadData() {
-    getEmployees().then((data) => setEmployees(data));
+    refetch();
   }
 
   function handleAddClick() {
@@ -48,7 +50,8 @@ function EmployeeDataGrid() {
   }
 
   function handleDeleteClick(employee: IEmployee) {
-    api.delete(`/api/employee/${employee._id}`).then(loadData);
+    if (confirm(`ต้องการลบ ${employee.firstName}`))
+      api.delete(`/api/employee/${employee._id}`).then(loadData);
   }
 
   function handleSaved() {

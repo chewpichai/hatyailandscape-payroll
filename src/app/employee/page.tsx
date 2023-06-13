@@ -1,8 +1,11 @@
 import React from "react";
 import EmployeeDataGrid from "@/components/datagrid-employee";
+import { getEmployees } from "@/libs/fetch";
 
-function Page() {
-  return <EmployeeDataGrid />;
+async function Page() {
+  const employees = await getEmployees();
+
+  return <EmployeeDataGrid employees={employees} />;
 }
 
 export default Page;

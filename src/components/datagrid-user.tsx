@@ -17,18 +17,20 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IUser } from "@/models/user";
 import UserForm from "./form-user";
+import { useQuery } from "@tanstack/react-query";
 
-function UserDataGrid() {
-  const [users, setUsers] = useState<IUser[]>([]);
+function UserDataGrid(props: { users: IUser[] }) {
   const [user, setUser] = useState<IUser>();
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    loadData();
-  }, []);
+  const { data: users, refetch } = useQuery<IUser[]>({
+    queryKey: ["users"],
+    queryFn: getUsers,
+    initialData: props.users,
+    enabled: false,
+  });
 
   function loadData() {
-    getUsers().then((data) => setUsers(data));
+    refetch();
   }
 
   function handleAddClick() {

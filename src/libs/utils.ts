@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
 
 export function getDateRange() {
-  const now = dayjs().hour(0).minute(0);
+  const now = dayjs().hour(0).minute(0).second(0);
   const day = now.date();
   if (day > 15)
     return [

@@ -22,28 +22,35 @@ import { DateInputField } from "./fields";
 import { useForm } from "react-hook-form";
 import dayjs, { Dayjs } from "dayjs";
 import PayConfirmDialog from "./dialog-pay-confirm";
+import { useQuery } from "@tanstack/react-query";
+
+const year = dayjs().year();
 
 type FormData = {
   endDate: Dayjs;
 };
 
-function BonusDataGrid() {
-  const [bonuses, setBonuses] = useState<IBonus[]>([]);
+function BonusDataGrid(props: { bonuses: IBonus[] }) {
   const [bonus, setBonus] = useState<IBonus>();
   const [showModal, setShowModal] = useState(false);
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: { endDate: dayjs() },
   });
   const [showDialog, setShowDialog] = useState(false);
+  const [params, setParams] = useState({
+    startDate: dayjs(`01-01-${year}`).toDate(),
+    endDate: dayjs(`12-31-${year}`).toDate(),
+  });
+  const { data: bonuses, refetch } = useQuery<IBonus[]>({
+    queryKey: ["bonuses"],
+    queryFn: () => getBonuses(params),
+    initialData: props.bonuses,
+    enabled: false,
+  });
 
   useEffect(() => {
-    const year = dayjs().year();
-    const params = {
-      startDate: dayjs(`01-01-${year}`).toDate(),
-      endDate: dayjs(`12-31-${year}`).toDate(),
-    };
-    getBonuses(params).then((data) => setBonuses(data));
-  }, []);
+    refetch();
+  }, [params, refetch]);
 
   function handleAddClick() {
     setBonus(undefined);
@@ -67,11 +74,10 @@ function BonusDataGrid() {
 
   function onSubmit(data: FormData) {
     const year = data.endDate.year();
-    const params = {
+    setParams({
       startDate: dayjs(`01-01-${year}`).toDate(),
       endDate: dayjs(`12-31-${year}`).toDate(),
-    };
-    getBonuses(params).then((data) => setBonuses(data));
+    });
   }
 
   function handlePayClick(bonus: IBonus) {
@@ -129,7 +135,7 @@ function BonusDataGrid() {
           <TableBody>
             {bonuses.map((bonus) => (
               <TableRow key={bonus._id}>
-                <TableCell>{`${bonus.employee.firstName} ${bonus.employee.lastName}`}</TableCell>
+                <TableCell>{`${bonus.employee?.firstName} ${bonus.employee?.lastName}`}</TableCell>
                 <TableCell className="text-center">
                   {dayjs(bonus.startDate).format("DD/MM/YY")}
                 </TableCell>

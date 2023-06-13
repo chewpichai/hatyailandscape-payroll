@@ -7,6 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AuthProvider } from "@/hooks/auth";
 import { getPath } from "@/libs/utils";
 import "./globals.css";
+import QueryProvider from "@/components/provider";
 
 export default function RootLayout({
   children,
@@ -30,7 +31,7 @@ export default function RootLayout({
             <body id="root">
               <Navigation />
               <Container maxWidth="md" className="pb-4">
-                {children}
+                <QueryProvider>{children}</QueryProvider>
               </Container>
             </body>
           </AuthProvider>
