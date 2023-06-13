@@ -6,21 +6,37 @@ export const api = axios.create({
 });
 
 export async function getEmployees() {
-  const { data } = await api.get("/api/employee");
-  return data;
+  try {
+    const { data } = await api.get("/api/employee");
+    return data;
+  } catch (err) {
+    return [];
+  }
 }
 
 export async function getPayrolls(params?: { startDate: Date; endDate: Date }) {
-  const { data } = await api.get("/api/payroll", { params });
-  return data;
+  try {
+    const { data } = await api.get("/api/payroll", { params });
+    return data;
+  } catch (err) {
+    return [];
+  }
 }
 
 export async function getUsers() {
-  const { data } = await api.get("/api/user");
-  return data;
+  try {
+    const { data } = await api.get("/api/user");
+    return data;
+  } catch (err) {
+    return [];
+  }
 }
 
 export async function getBonuses(params?: { startDate: Date; endDate: Date }) {
-  const { data } = await api.get("/api/bonus", { params });
-  return data;
+  try {
+    const { data } = await api.get("/api/bonus", { params });
+    return data;
+  } catch (err) {
+    return [];
+  }
 }
