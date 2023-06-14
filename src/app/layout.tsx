@@ -1,13 +1,13 @@
 "use client";
 import Navigation from "@/components/navigation";
-import { darkTheme } from "./theme/themes";
+import { darkTheme } from "@/theme/themes";
 import { ThemeProvider, CssBaseline, Container } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AuthProvider } from "@/hooks/auth";
 import { getPath } from "@/libs/utils";
-import "./globals.css";
 import QueryProvider from "@/components/provider";
+import "./globals.css";
 
 export default function RootLayout({
   children,

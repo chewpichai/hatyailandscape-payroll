@@ -23,7 +23,7 @@ import UploadDialog from "./dialog-upload";
 import ViewFileDialog from "./dialog-viewfile";
 import { useQuery } from "@tanstack/react-query";
 
-function EmployeeDataGrid(props: { employees: IEmployee[] }) {
+function EmployeeDataGrid() {
   const [employee, setEmployee] = useState<IEmployee>();
   const [showModal, setShowModal] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
@@ -31,7 +31,6 @@ function EmployeeDataGrid(props: { employees: IEmployee[] }) {
   const { data: employees, refetch } = useQuery<IEmployee[]>({
     queryKey: ["employees"],
     queryFn: getEmployees,
-    initialData: props.employees,
   });
 
   function loadData() {
@@ -91,7 +90,7 @@ function EmployeeDataGrid(props: { employees: IEmployee[] }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees.map((employee) => (
+            {employees?.map((employee) => (
               <TableRow key={employee._id}>
                 <TableCell>{employee.firstName}</TableCell>
                 <TableCell>{employee.lastName}</TableCell>

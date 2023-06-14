@@ -19,13 +19,12 @@ import { IUser } from "@/models/user";
 import UserForm from "./form-user";
 import { useQuery } from "@tanstack/react-query";
 
-function UserDataGrid(props: { users: IUser[] }) {
+function UserDataGrid() {
   const [user, setUser] = useState<IUser>();
   const [showModal, setShowModal] = useState(false);
   const { data: users, refetch } = useQuery<IUser[]>({
     queryKey: ["users"],
     queryFn: getUsers,
-    initialData: props.users,
   });
 
   function loadData() {
@@ -71,7 +70,7 @@ function UserDataGrid(props: { users: IUser[] }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {users?.map((user) => (
               <TableRow key={user._id}>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.type}</TableCell>

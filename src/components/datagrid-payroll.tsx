@@ -39,7 +39,7 @@ type PayrollSearchFormData = {
   endDate: Dayjs;
 };
 
-function PayrollDataGrid(props: { payrolls: IPayroll[] }) {
+function PayrollDataGrid() {
   const [params, setParams] = useState({ startDate: start, endDate: end });
   const [payroll, setPayroll] = useState<IPayroll>();
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +52,6 @@ function PayrollDataGrid(props: { payrolls: IPayroll[] }) {
   const { data: payrolls, refetch } = useQuery<IPayroll[]>({
     queryKey: ["payrolls"],
     queryFn: () => getPayrolls(params),
-    initialData: props.payrolls,
   });
 
   useEffect(() => {
@@ -154,7 +153,7 @@ function PayrollDataGrid(props: { payrolls: IPayroll[] }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrolls.map((payroll) => (
+            {payrolls?.map((payroll) => (
               <TableRow key={payroll._id}>
                 <TableCell>{`${payroll.employee.firstName} ${payroll.employee.lastName}`}</TableCell>
                 <TableCell className="text-center">

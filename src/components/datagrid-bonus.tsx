@@ -30,7 +30,7 @@ type FormData = {
   endDate: Dayjs;
 };
 
-function BonusDataGrid(props: { bonuses: IBonus[] }) {
+function BonusDataGrid() {
   const [bonus, setBonus] = useState<IBonus>();
   const [showModal, setShowModal] = useState(false);
   const { control, handleSubmit } = useForm<FormData>({
@@ -44,7 +44,6 @@ function BonusDataGrid(props: { bonuses: IBonus[] }) {
   const { data: bonuses, refetch } = useQuery<IBonus[]>({
     queryKey: ["bonuses"],
     queryFn: () => getBonuses(params),
-    initialData: props.bonuses,
   });
 
   useEffect(() => {
@@ -132,7 +131,7 @@ function BonusDataGrid(props: { bonuses: IBonus[] }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bonuses.map((bonus) => (
+            {bonuses?.map((bonus) => (
               <TableRow key={bonus._id}>
                 <TableCell>{`${bonus.employee?.firstName} ${bonus.employee?.lastName}`}</TableCell>
                 <TableCell className="text-center">
